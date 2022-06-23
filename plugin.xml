@@ -41,11 +41,11 @@
         </config-file>
 
         <source-file src="src/android/io/sqlc/SQLitePlugin.java" target-dir="src/io/sqlc"/>
+        <!-- SQLiteAndroidDatabase is the old base SQLite controller class-->
         <source-file src="src/android/io/sqlc/SQLiteAndroidDatabase.java" target-dir="src/io/sqlc"/>
+        <source-file src="src/android/io/sqlc/SpatialiteDatabase.java" target-dir="src/io/sqlc"/>
         <source-file src="src/android/io/sqlc/SQLiteConnectorDatabase.java" target-dir="src/io/sqlc"/>
-        <!-- LITE GLUE IS THE OLD FOLDER!!!!-->
-        <source-file src="src/android/io/liteglue/SQLitePlugin.java" target-dir="src/io/liteglue"/>
-        <source-file src="src/android/io/liteglue/SpatialiteDatabase.java" target-dir="src/io/liteglue"/>
+        
 
         <source-file src="src/android/jsqlite/Authorizer.java" target-dir="src/jsqlite/" />
         <source-file src="src/android/jsqlite/Backup.java" target-dir="src/jsqlite/" />

@@ -196,7 +196,7 @@ public class SQLitePlugin extends CordovaPlugin {
      *
      * @param dbName   The name of the database file
      */
-    private SQLiteAndroidDatabase openDatabase(String dbname, CallbackContext cbc, boolean old_impl) throws Exception {
+    private SpatialiteDatabase openDatabase(String dbname, CallbackContext cbc, boolean old_impl) throws Exception {
         try {
             // ASSUMPTION: no db (connection/handle) is already stored in the map
             // [should be true according to the code in DBRunner.run()]
@@ -209,7 +209,7 @@ public class SQLitePlugin extends CordovaPlugin {
 
             Log.v("info", "Open sqlite db: " + dbfile.getAbsolutePath());
 
-            SQLiteAndroidDatabase mydb = old_impl ? new SQLiteAndroidDatabase() : new SQLiteConnectorDatabase();
+            SpatialiteDatabase mydb = old_impl ? new SpatialiteDatabase() : new SQLiteConnectorDatabase();
             mydb.open(dbfile);
 
             if (cbc != null) // XXX Android locking/closing BUG workaround
@@ -255,7 +255,7 @@ public class SQLitePlugin extends CordovaPlugin {
         DBRunner r = dbrmap.get(dbname);
 
         if (r != null) {
-            SQLiteAndroidDatabase mydb = r.mydb;
+            SpatialiteDatabase mydb = r.mydb;
 
             if (mydb != null)
                 mydb.closeDatabaseNow();
@@ -309,7 +309,7 @@ public class SQLitePlugin extends CordovaPlugin {
         final BlockingQueue<DBQuery> q;
         final CallbackContext openCbc;
 
-        SQLiteAndroidDatabase mydb;
+        SpatialiteDatabase mydb;
 
         DBRunner(final String dbname, JSONObject options, CallbackContext cbc) {
             this.dbname = dbname;

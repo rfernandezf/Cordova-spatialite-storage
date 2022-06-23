@@ -30,7 +30,7 @@ import io.liteglue.SQLiteStatement;
 /**
  * Android SQLite-Connector Database helper class
  */
-class SQLiteConnectorDatabase extends SQLiteAndroidDatabase
+class SQLiteConnectorDatabase extends SpatialiteDatabase
 {
     static SQLiteConnector connector = new SQLiteConnector();
 
