@@ -1,9 +1,9 @@
 {
-  "name": "cordova-sqlite-storage",
-  "version": "6.0.0",
-  "description": "Native interface to SQLite for PhoneGap / Cordova - cordova-sqlite-storage plugin version",
+  "name": "cordova-spatialite-storage",
+  "version": "2.1.0",
+  "description": "Native interface to SQLite with spatialite for PhoneGap / Cordova - cordova-spatialite-storage plugin version",
   "cordova": {
-    "id": "cordova-sqlite-storage",
+    "id": "cordova-spatialite-storage",
     "platforms": [
       "android",
       "browser",
@@ -14,10 +14,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/xpbrew/cordova-sqlite-storage.git"
+    "url": "https://github.com/rfernandezf/cordova-spatialite-storage.git"
   },
   "keywords": [
     "sqlite",
+    "spatialite",
     "ecosystem:cordova",
     "cordova-android",
     "cordova-browser",

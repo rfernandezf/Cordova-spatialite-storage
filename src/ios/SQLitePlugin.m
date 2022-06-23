@@ -9,12 +9,15 @@
 #import "SQLitePlugin.h"
 
 #import "sqlite3.h"
+#import "spatialite.h"
 
-// Defines Macro to only log lines when in DEBUG mode
-#ifdef DEBUG
-#   define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-#else
-#   define DLog(...)
+#include <regex.h>
+
+// NOTE: This is now broken by cordova-ios 4.0, see:
+// https://issues.apache.org/jira/browse/CB-9638
+// Solution is to use NSJSONSerialization instead.
+#ifdef READ_BLOB_AS_BASE64
+#import <Cordova/NSData+Base64.h>
 #endif
 
 #if !__has_feature(objc_arc)
@@ -31,6 +34,7 @@
 @implementation SQLitePlugin
 
 @synthesize openDBs;
+@synthesize openConnections;
 @synthesize appDBPaths;
 
 -(void)pluginInitialize
@@ -39,6 +43,7 @@
 
     {
         openDBs = [CustomPSPDFThreadSafeMutableDictionary dictionaryWithCapacity:0];
+        openConnections = [NSMutableDictionary dictionaryWithCapacity:0];
         appDBPaths = [NSMutableDictionary dictionaryWithCapacity:0];
 
         NSString *docs = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
@@ -192,6 +197,11 @@
                 if(sqlite3_exec(db, (const char*)"SELECT count(*) FROM sqlite_master;", NULL, NULL, NULL) == SQLITE_OK) {
                     dbPointer = [NSValue valueWithPointer:db];
                     [openDBs setObject: dbPointer forKey: dbfilename];
+                    // initialize spatialite
+                    void* cache = spatialite_alloc_connection ();
+                    spatialite_init_ex (db, cache, 1);
+                    NSValue *cachePointer = [NSValue valueWithPointer:cache];
+                    [openConnections setObject: cachePointer forKey: dbPointer];
                     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Database opened"];
                 } else {
                     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Unable to open DB with key"];
@@ -205,6 +215,7 @@
 
     // DLog(@"open cb finished ok");
 }
+
 
 -(void) close: (CDVInvokedUrlCommand*)command
 {
@@ -237,6 +248,13 @@
             DLog(@"close db name: %@", dbFileName);
             sqlite3_close (db);
             [openDBs removeObjectForKey:dbFileName];
+            
+            // clean up spatialite
+            NSValue *cacheVal = [openConnections objectForKey:val];
+            void *cache = [cacheVal pointerValue];
+            spatialite_cleanup_ex(cache);
+            [openConnections removeObjectForKey:val];
+            
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"DB closed"];
         }
     }

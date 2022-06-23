@@ -36,9 +36,17 @@ includes and uses PSPDFThreadSafeMutableDictionary (PSPDFThreadSafeMutableDictio
 
 MIT or Apache 2.0
 
-### SQLite3-WinRT
+### SQLite3-WinRT [used by  Windows (8.1) version]
 
 by @doo (doo GmbH)
+
+## WP(7/8) version
+
+MIT or Apache 2.0
+
+## Class lib(s) used by WP(7/8) version
+
+### C#-SQLite
 
 MIT License
 
