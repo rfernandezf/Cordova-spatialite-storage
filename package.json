@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "coffeescript": "1",
+    "coffescript": "^0.0.1-security",
     "cross-spawn": "^6.0.5",
     "fs-extra": "^8.1.0"
   }
